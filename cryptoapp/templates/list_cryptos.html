@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wybierz kryptowalutę</title>
+    <!-- Dodajemy styl Bootstrapa -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h1 class="mb-4">Lista kryptowalut:</h1>
+
+    <!-- Wyszukiwarka -->
+    <input class="form-control mb-4" id="cryptoSearch" type="text" placeholder="Wyszukaj kryptowalutę...">
+    
+    <div class="row">
+    {% for crypto in cryptos %}
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <!-- Jeśli mamy logo, dodajemy je tutaj -->
+                {% if crypto.logo %}
+                    <img src="{{ crypto.logo }}" class="card-img-top" alt="{{ crypto.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ crypto.name }}</h5>
+                    <!-- Możesz dodać dodatkowe informacje o kryptowalucie tutaj -->
+                    <a href="{% url 'crypto_chart' crypto_name=crypto.id %}" class="btn btn-primary">Zobacz wykres</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+<!-- Skrypt do wyszukiwania kryptowaluty -->
+<script>
+    $(document).ready(function(){
+        $("#cryptoSearch").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $(".card").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
